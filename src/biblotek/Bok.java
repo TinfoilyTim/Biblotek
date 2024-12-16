@@ -15,12 +15,21 @@ public class Bok {
     String isbn;
     boolean stock;
     
-    public Bok(){
-        this.title = "To the Lighthouse";
-        this.author = "Virginia Woolf";
-        this.isbn = "978-0141183411";
+   public Bok(){
+        this.title = "Unknown title";
+        this.author = "Unknown author";
+        this.isbn = "Unknown isbn";
         this.stock = false;
         
         
+    } 
+   
+    public Bok (String title, String author, String isbn, boolean stock){
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.stock = stock;
     }
+    
+    
 }
