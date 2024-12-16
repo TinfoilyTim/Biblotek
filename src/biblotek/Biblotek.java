@@ -5,7 +5,11 @@
  */
 package biblotek;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import static java.lang.Boolean.parseBoolean;
+import static java.nio.file.Files.lines;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,23 +25,25 @@ public class Biblotek {
     public static void main(String[] args) {
         List<Bok> books = new ArrayList<>();
         List<String> temp = new ArrayList<>();
-        temp.add("To the lighthouse");
-        temp.add("Virginia Woolf");
-        temp.add("978-0141183411");
-        temp.add("true");
-        temp.add("Pride and Prejudice");
-        temp.add("Jane Austen");
-        temp.add("978-0141439518");
-        temp.add("true");
+          try (BufferedReader reader = new BufferedReader(new FileReader("library.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
         int lastNr = 0;
         
-        for (int i = 0; i < temp.size()/4; i++) {
+        
+    /*    for (int i = 0; i < temp.size()/4; i++) {
             books.add(new Bok(temp.get(0 + lastNr), temp.get(1 + lastNr),temp.get(2 + lastNr), parseBoolean(temp.get(3 + lastNr))));
             lastNr += 4;
         }
+    */    
         
-        
-        System.out.println(books.get(1).title);
+       //System.out.println(books.get(1).title);
     }
     
-}
+
