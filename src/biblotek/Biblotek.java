@@ -42,7 +42,8 @@ public class Biblotek {
         }
        
         
-       System.out.println(books.get(parseInt(JOptionPane.showInputDialog("Skriv"))).title);
+        
+       System.out.println(books.get(1).author);
     }
 }    
 
