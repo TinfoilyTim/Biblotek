@@ -6,10 +6,12 @@
 package biblotek;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -40,10 +42,38 @@ public class Biblotek {
             books.add(new Bok(temp.get(0 + lastNr), temp.get(1 + lastNr),temp.get(2 + lastNr), parseBoolean(temp.get(3 + lastNr))));
             lastNr += 4;
         }
-       
         
         
+        addBook();
        System.out.println(books.get(1).author);
     }
+
+    
+    public class addBook{
+        static addBook(){
+        for (int i = 0; i < 3; i++) {
+            try {
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/library.txt", true)));
+            while(true){
+                String in = JOptionPane.showInputDialog("Skriv in ett namn");
+                
+                if (in.equals("")) {
+                    break;
+                }
+                else{
+                    pw.println(in);
+                    in = JOptionPane.showInputDialog("Skriv in din score");
+                    pw.println(in);
+                }
+                
+ 
+            }
+            pw.close();
+        }
+        catch (IOException e){
+            System.out.println("Kunde inte spara till filen");
+        }
+        }
+    }}
 }    
 
