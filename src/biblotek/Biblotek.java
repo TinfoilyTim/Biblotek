@@ -48,9 +48,7 @@ public class Biblotek {
        System.out.println(books.get(1).author);
     }
 
-    
-    public class addBook{
-        static addBook(){
+    private static void addBook() {
         for (int i = 0; i < 3; i++) {
             try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/library.txt", true)));
@@ -73,7 +71,10 @@ public class Biblotek {
         catch (IOException e){
             System.out.println("Kunde inte spara till filen");
         }
-        }
-    }}
+    }
+
+    
+    
+    } 
 }    
 
