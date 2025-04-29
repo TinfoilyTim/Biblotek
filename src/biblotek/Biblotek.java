@@ -5,16 +5,17 @@
  */
 package biblotek;
 
+import java.awt.print.Book;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import static java.lang.Boolean.parseBoolean;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -43,12 +44,45 @@ public class Biblotek {
             lastNr += 4;
         }
         
+             // Create a frame
+        JFrame frame = new JFrame("Library");
+        frame.setSize(600, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+       
+        // Table model
+        String[] columns = {"Author", "Title", "In Stock"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+
         
-        addBook();
-       System.out.println(books.get(1).author);
+         // Add books to model
+        for (Bok b : books) {
+            model.addRow(new Object[]{b.author, b.title, b.stock ? "Yes" : "No"});
+        }
+
+        // Create a table
+        JTable table = new JTable(model);
+
+        // Add the table to a scroll pane (so it can scroll)
+        frame.add(new JScrollPane(table));
+
+        // Make the frame visible
+        frame.setVisible(true);
+   
+    
+    
+        
+        
+        
+       // addBook();
+        for (int i = 0; i < books.size(); i++) {
+            
+            
+        }
+       
     }
 
-    private static void addBook() {
+   /* private static void addBook() {
         for (int i = 0; i < 3; i++) {
             try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/library.txt", true)));
@@ -60,7 +94,7 @@ public class Biblotek {
                 }
                 else{
                     pw.println(in);
-                    in = JOptionPane.showInputDialog("Skriv in din score");
+                    in = JOptionPane.showInputDialog("Skriv in ett namn");
                     pw.println(in);
                 }
                 
@@ -70,11 +104,11 @@ public class Biblotek {
         }
         catch (IOException e){
             System.out.println("Kunde inte spara till filen");
-        }
-    }
+        } 
+    } 
 
     
     
-    } 
+    } */
 }    
 

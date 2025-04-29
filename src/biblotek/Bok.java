@@ -19,7 +19,7 @@ public class Bok {
         this.title = "Unknown title";
         this.author = "Unknown author";
         this.isbn = "Unknown isbn";
-        this.stock = false;
+        this.stock = true;
         
         
     } 

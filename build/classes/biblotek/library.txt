@@ -42,7 +42,4 @@ Sömngångaren
 Lars Kepler
 978-9100182915
 false
-Sömngångaren
-Lars Kepler
-978-9100182915
-false
+
