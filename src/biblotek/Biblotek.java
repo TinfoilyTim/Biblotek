@@ -5,6 +5,8 @@
  */
 package biblotek;
 
+import static biblotek.Biblotek.LoginGUI.loginGui;
+import static biblotek.Biblotek.LoginGUI.showLibrary;
 import static biblotek.Biblotek.books;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -38,12 +40,20 @@ public class Biblotek {
    static List<Bok> books = new ArrayList<>();
    
    
+   
+   public static void loadCredentials(){
+       
+   }
+   
     public static void main(String[] args) {
         
         
-          loginGui();
+        loginGui();
+          
         
-        List<String> temp = new ArrayList<>();
+          
+
+               List<String> temp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -58,103 +68,6 @@ public class Biblotek {
             books.add(new Bok(temp.get(0 + lastNr), temp.get(1 + lastNr),temp.get(2 + lastNr), parseBoolean(temp.get(3 + lastNr))));
             lastNr += 4;
         }
-        
-             // Skapa frame
-        JFrame frame = new JFrame("Library");
-        frame.setSize(600, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-       
-        // Tabell modell, användaren kan inte skriva i
-        String[] columns = {"Author", "Title", "In Stock"};
-        DefaultTableModel model = new DefaultTableModel(columns, 0) {
-            @Override
-        public boolean isCellEditable(int row, int column) {
-        return false; 
-    }
-       
-};
-
-    
-    
-          
-        
-         // lägger till böcker 
-        for (Bok b : books) {
-            model.addRow(new Object[]{b.author,b.title , b.stock ? "Yes" : "No"});
-        }
-
-        // Skapar tabellen
-        JTable table = new JTable(model);
-
-        // Gör tabellen skrollbar
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel(); // uses FlowLayout by default
-        JButton borrowButton = new JButton("Borrow Selected Book");
-        JButton returnButton = new JButton("Return Selected Book");
-        buttonPanel.add(borrowButton);
-        buttonPanel.add(returnButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-
-        borrowButton.addActionListener(new ActionListener() {
-            @Override
-    public void actionPerformed(ActionEvent e) {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
-            return;
-        }
-
-        Bok selectedBook = books.get(selectedRow);
-        if (selectedBook.stock == false) {
-            JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
-        } else {
-            selectedBook.stock = false;
-            model.setValueAt("No", selectedRow, 2); // Update "In Stock" column
-            JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
-        }
-        
-         reDraw();       //uppdaterar textfilen efter varje lån
-    }
-    });
-       
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-    public void actionPerformed(ActionEvent e) {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
-            return;
-        }
-
-        Bok selectedBook = books.get(selectedRow);
-        
-        if (selectedBook.stock == true) {
-            JOptionPane.showMessageDialog(frame, "You dont have this book.");
-        } else {
-            selectedBook.stock = true;
-            model.setValueAt("Yes", selectedRow, 2); // Update "In Stock" column
-            JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
-        }
-         reDraw();       //refreshar textfilen after varje lån
-    
-    }
-    
-});
-
-        frame.add(panel);
-        // Make the frame visible
-        frame.setVisible(true);
-
-        // addBook();
-        for (int i = 0; i < books.size(); i++) {
-            
-            
-        }
-       
     }
 
     private static void addBook() {
@@ -209,9 +122,9 @@ public class Biblotek {
         }  
     }
 }
-    public static void createUser(){
-        String username = JOptionPane.showInputDialog("skriv användarnamn", null);
-        String password = JOptionPane.showInputDialog("skriv lösenord", null);
+    public static void createUser(String userN, String passW){
+        String username = userN;
+        String password = passW;
         User user = new User(username,password);
             try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/users.txt", true)));
@@ -234,33 +147,132 @@ public class Biblotek {
     public static void login(){
         
     }
-    public class LoginGUI {
-        public static void loginGui() {
-            JFrame frame = new JFrame("Logga in");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(300, 180);
-            frame.setLocationRelativeTo(null);
 
-            JPanel panel = new JPanel(new GridLayout(4, 2));
+   public class LoginGUI {
+    public static void loginGui() {
+        JFrame frame = new JFrame("Logga in");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 180);
+        frame.setLocationRelativeTo(null);
 
-            JLabel userLabel = new JLabel("Användarnamn:");
-            JTextField userText = new JTextField();
+        JPanel panel = new JPanel(new GridLayout(4, 2));
 
-            JLabel passLabel = new JLabel("Lösenord:");
-            JPasswordField passText = new JPasswordField();
+        JLabel userLabel = new JLabel("Användarnamn:");
+        JTextField userText = new JTextField();
 
-            JButton loginButton = new JButton("Logga in");
-            JButton registerButton = new JButton("Registrera");
+        JLabel passLabel = new JLabel("Lösenord:");
+        JPasswordField passText = new JPasswordField();
 
-            panel.add(userLabel);
-            panel.add(userText);
-            panel.add(passLabel);
-            panel.add(passText);
-            panel.add(loginButton);
-            panel.add(registerButton);
+        JButton loginButton = new JButton("Logga in");
+        JButton registerButton = new JButton("Registrera");
 
-            frame.getContentPane().add(panel);
-            frame.setVisible(true);
+        panel.add(userLabel);
+        panel.add(userText);
+        panel.add(passLabel);
+        panel.add(passText);
+        panel.add(loginButton);
+        panel.add(registerButton);
+        
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+
+        
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String username = userText.getText();  
+                String password = new String(passText.getPassword());
+                
+                if(username.equals("Admin") && password.equals("1234")){
+                    frame.dispose(); 
+                    showLibrary();   
+                }
+                
+                else{
+                   JOptionPane.showMessageDialog(null, "Fel användarnamn eller lösenord!");
+                }
+            }
+        });
+         registerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                createUser(userText.getText(),new String(passText.getPassword()));
+                JOptionPane.showMessageDialog(null, "Användare registrerad!");
+                
+                
+            }
+        });
+    }
+
+    public static void showLibrary() {
+        JFrame frame = new JFrame("Library");
+        frame.setSize(600, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        String[] columns = {"Author", "Title", "In Stock"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Bok b : books) {
+            model.addRow(new Object[]{b.author, b.title, b.stock ? "Yes" : "No"});
         }
+
+        JTable table = new JTable(model);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        JButton borrowButton = new JButton("Borrow Selected Book");
+        JButton returnButton = new JButton("Return Selected Book");
+        buttonPanel.add(borrowButton);
+        buttonPanel.add(returnButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        borrowButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
+                    return;
+                }
+
+                Bok selectedBook = books.get(selectedRow);
+                if (!selectedBook.stock) {
+                    JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
+                } else {
+                    selectedBook.stock = false;
+                    model.setValueAt("No", selectedRow, 2);
+                    JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
+                    reDraw();
+                }
+            }
+        });
+
+        returnButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(frame, "Please select a book to return.");
+                    return;
+                }
+
+                Bok selectedBook = books.get(selectedRow);
+                if (selectedBook.stock) {
+                    JOptionPane.showMessageDialog(frame, "This book is not borrowed.");
+                } else {
+                    selectedBook.stock = true;
+                    model.setValueAt("Yes", selectedRow, 2);
+                    JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
+                    reDraw();
+                }
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
 }
+
 }
