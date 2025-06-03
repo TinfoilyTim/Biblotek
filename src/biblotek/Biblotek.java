@@ -5,24 +5,20 @@
  */
 package biblotek;
 
-<<<<<<< Updated upstream
-=======
 import static biblotek.Biblotek.books;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
->>>>>>> Stashed changes
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< Updated upstream
-import javax.swing.JOptionPane;
-=======
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,39 +29,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
->>>>>>> Stashed changes
 
 /**
  *
  * @author 05timerl
  */
 public class Biblotek {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-    /**
-     * @param args the command line arguments
-     */
-=======
-   static List<Bok> books = new ArrayList<>();
-   
-   
->>>>>>> Stashed changes
-    public static void main(String[] args) {
-        List<Bok> books = new ArrayList<>();
-=======
    static List<Bok> books = new ArrayList<>();
    
    
     public static void main(String[] args) {
         
         
-          
+          loginGui();
         
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         List<String> temp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
             String line;
@@ -81,16 +58,7 @@ public class Biblotek {
             books.add(new Bok(temp.get(0 + lastNr), temp.get(1 + lastNr),temp.get(2 + lastNr), parseBoolean(temp.get(3 + lastNr))));
             lastNr += 4;
         }
-<<<<<<< Updated upstream
-       
         
-<<<<<<< Updated upstream
-        
-       System.out.println(books.get(1).author);
-=======
-        
-=======
->>>>>>> Stashed changes
              // Skapa frame
         JFrame frame = new JFrame("Library");
         frame.setSize(600, 600);
@@ -187,12 +155,8 @@ public class Biblotek {
             
         }
        
->>>>>>> Stashed changes
     }
-}    
 
-<<<<<<< Updated upstream
-=======
     private static void addBook() {
         for (int i = 0; i < 3; i++) {
             try {
@@ -300,8 +264,3 @@ public class Biblotek {
         }
 }
 }
-
-
-
-                   
->>>>>>> Stashed changes
