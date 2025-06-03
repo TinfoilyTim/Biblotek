@@ -30,9 +30,10 @@ public class Bok {
         this.isbn = isbn;
         this.stock = stock;
     }
+    /*
     public void setStock(boolean stock){
         this.stock = stock;
-    }
+    } */
     
     
 }

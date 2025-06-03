@@ -1,48 +1,77 @@
-To the Lighthouse
 Virginia Woolf
+To the Lighthouse
 978-0141183411
-false
-Pride and Prejudice
+true
 Jane Austen
+Pride and Prejudice
 978-0141439518
+<<<<<<< Updated upstream
 false
 1984
+=======
+true
+>>>>>>> Stashed changes
 George Orwell
+1984
 978-0451524935
+<<<<<<< Updated upstream
 false
 Moby-Dick
+=======
+true
+>>>>>>> Stashed changes
 Herman Melville
+Moby-Dick
 978-1503280786
+<<<<<<< Updated upstream
 false
 The Great Gatsby
+=======
+true
+>>>>>>> Stashed changes
 F. Scott Fitzgerald
+The Great Gatsby
 978-0743273565
-false
-The Catcher in the Rye
+true
 J.D. Salinger
+The Catcher in the Rye
 978-0316769488
-false
-Crime and Punishment
+true
 Fyodor Dostoevsky
+Crime and Punishment
 978-0486454115
+<<<<<<< Updated upstream
 false
 War and Peace
+=======
+true
+>>>>>>> Stashed changes
 Leo Tolstoy
+War and Peace
 978-0199232765
+<<<<<<< Updated upstream
 false
 Brave New World
+=======
+true
+>>>>>>> Stashed changes
 Aldous Huxley
+Brave New World
 978-0060850524
-false
-The Brothers Karamazov
+true
 Fyodor Dostoevsky
+The Brothers Karamazov
 978-0374528379
+true
+Lars Kepler
+Sömngångaren
+978-9100182915
+<<<<<<< Updated upstream
 false
 Sömngångaren
 Lars Kepler
 978-9100182915
 false
-Sömngångaren
-Lars Kepler
-978-9100182915
-false
+=======
+true
+>>>>>>> Stashed changes
