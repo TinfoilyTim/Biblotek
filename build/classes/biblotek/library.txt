@@ -6,6 +6,7 @@ Jane Austen
 Pride and Prejudice
 978-0141439518
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 false
 1984
 =======
@@ -29,6 +30,17 @@ The Great Gatsby
 =======
 true
 >>>>>>> Stashed changes
+=======
+true
+George Orwell
+1984
+978-0451524935
+true
+Herman Melville
+Moby-Dick
+978-1503280786
+true
+>>>>>>> Stashed changes
 F. Scott Fitzgerald
 The Great Gatsby
 978-0743273565
@@ -40,6 +52,7 @@ true
 Fyodor Dostoevsky
 Crime and Punishment
 978-0486454115
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 false
 War and Peace
@@ -55,6 +68,13 @@ Brave New World
 =======
 true
 >>>>>>> Stashed changes
+=======
+true
+Leo Tolstoy
+War and Peace
+978-0199232765
+true
+>>>>>>> Stashed changes
 Aldous Huxley
 Brave New World
 978-0060850524
@@ -63,15 +83,23 @@ Fyodor Dostoevsky
 The Brothers Karamazov
 978-0374528379
 true
+<<<<<<< Updated upstream
 Lars Kepler
 Sömngångaren
 978-9100182915
 <<<<<<< Updated upstream
 false
 Sömngångaren
+=======
+>>>>>>> Stashed changes
 Lars Kepler
+Sömngångaren
 978-9100182915
+<<<<<<< Updated upstream
 false
+=======
+true
+>>>>>>> Stashed changes
 =======
 true
 >>>>>>> Stashed changes

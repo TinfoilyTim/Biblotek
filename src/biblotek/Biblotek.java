@@ -41,10 +41,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Biblotek {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     /**
      * @param args the command line arguments
      */
+=======
+   static List<Bok> books = new ArrayList<>();
+   
+   
+>>>>>>> Stashed changes
     public static void main(String[] args) {
         List<Bok> books = new ArrayList<>();
 =======
@@ -56,6 +62,9 @@ public class Biblotek {
         
           
         
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         List<String> temp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
@@ -75,10 +84,13 @@ public class Biblotek {
 <<<<<<< Updated upstream
        
         
+<<<<<<< Updated upstream
         
        System.out.println(books.get(1).author);
 =======
         
+=======
+>>>>>>> Stashed changes
              // Skapa frame
         JFrame frame = new JFrame("Library");
         frame.setSize(600, 600);
