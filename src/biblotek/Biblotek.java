@@ -5,8 +5,8 @@
  */
 package biblotek;
 
-import static biblotek.Biblotek.LoginGUI.loginGui;
-import static biblotek.Biblotek.LoginGUI.showLibrary;
+import static biblotek.Biblotek.GUI.loginGui;
+import static biblotek.Biblotek.GUI.showLibrary;
 import static biblotek.Biblotek.books;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -64,8 +64,9 @@ public class Biblotek {
    //MAIN
     public static void main(String[] args) {
         
-        loginGui();
         loadCredentials();
+        loginGui();
+        System.out.println(users.get(1).admin);
 
                List<String> booksTemp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
@@ -190,7 +191,7 @@ public class Biblotek {
         
     }
         //VISA LOGIN
-   public class LoginGUI {
+   public class GUI {
     public static void loginGui() {
         JFrame frame = new JFrame("Logga in");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -227,12 +228,19 @@ public class Biblotek {
                 
                 for (int i = 0; i < users.size(); i++) {
                         if(password.equals(users.get(i).password) && username.equals(users.get(i).username))   {
-                            frame.dispose(); 
-                            showLibrary();
                             currentUser = i;
-                            JOptionPane.showMessageDialog(null, "Inloggad som " + users.get(i).username);
+                            if(users.get(i).admin == true){
+                                frame.dispose(); 
+                                showLibraryAdmin();
+                            }
+                            else{
+                                frame.dispose(); 
+                                showLibrary();
+                                JOptionPane.showMessageDialog(null, "Inloggad som " + users.get(i).username);
                             
                             break;
+                                    }
+                            
                         }
                         else{
                             JOptionPane.showMessageDialog(null, "Fel anändarnamn eller lösenord!");
@@ -280,8 +288,12 @@ public class Biblotek {
         JButton returnButton = new JButton("Return Selected Book");
         buttonPanel.add(borrowButton);
         buttonPanel.add(returnButton);
+             
+        
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
+        
+        
         //LÅNA KNAPP
         borrowButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -299,8 +311,7 @@ public class Biblotek {
                     selectedBook.stock = false;
                     model.setValueAt("No", selectedRow, 2);
                     JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
-                    users
-                    reDrawUsers();
+                    //reDrawUsers();
                     reDrawBooks();
                 }
             }
@@ -326,6 +337,134 @@ public class Biblotek {
                 }
             }
         });
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+    
+            //VISA BIBLOTEK ADMIN
+    public static void showLibraryAdmin() {
+        JFrame frame = new JFrame("Library");
+        frame.setSize(600, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        String[] columns = {"Author", "Title", "In Stock", "ISBN"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Bok b : books) {
+            model.addRow(new Object[]{b.author, b.title, b.stock ? "Yes" : "No", b.isbn});
+        }
+
+        JTable table = new JTable(model);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        JButton borrowButton = new JButton("Borrow Selected Book");
+        JButton returnButton = new JButton("Return Selected Book");
+        JButton addButton = new JButton("+");
+        JButton removeButton = new JButton("-");
+        buttonPanel.add(borrowButton);
+        buttonPanel.add(returnButton);
+        buttonPanel.add(addButton);
+        buttonPanel.add(removeButton);
+        
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        
+        
+        //LÅNA KNAPP
+        borrowButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
+                    
+                    
+                }
+
+                Bok selectedBook = books.get(selectedRow);
+                if (!selectedBook.stock) {
+                    JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
+                } else {
+                    selectedBook.stock = false;
+                    model.setValueAt("No", selectedRow, 2);
+                    JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
+                    //reDrawUsers();
+                    reDrawBooks();
+                }
+            }
+        });
+        
+        //LÄMNA TILLBAKA KNAPP
+        returnButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(frame, "Please select a book to return.");
+                    return;
+                }
+
+                Bok selectedBook = books.get(selectedRow);
+                if (selectedBook.stock) {
+                    JOptionPane.showMessageDialog(frame, "This book is not borrowed.");
+                } else {
+                    selectedBook.stock = true;
+                    model.setValueAt("Yes", selectedRow, 2);
+                    JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
+                    reDrawBooks();
+                }
+            }
+        });
+        
+        //LÄGG TILL BOK KNAPP
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String title = JOptionPane.showInputDialog("Skriv bokens titel:");
+                    if(title.equals("")){
+                        // försökte med !title men funkade inte hur jag än gjorde, därav en tom if sats
+                    }
+                    else{
+                        String author = JOptionPane.showInputDialog("Skriv bokens författare:");
+                        String isbn = JOptionPane.showInputDialog("ISBN för boken:");
+                        books.add(new Bok (title, author, isbn , true));
+                        reDrawBooks();
+                        frame.dispose();
+                        showLibraryAdmin();
+                    }
+                
+                
+            }
+        }); 
+
+        //TA BORT BOK KNAPP
+        removeButton.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        String remove = JOptionPane.showInputDialog("ISBN för boken som ska tas bort");
+
+        if (remove == null || remove.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingen ISBN angiven.");
+        } else {
+            boolean removed = books.removeIf(book -> book.isbn.equals(remove.trim()));
+
+            if (removed) {
+                reDrawBooks();
+                JOptionPane.showMessageDialog(null, "Boken togs bort.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingen bok med denna ISBN hittades.");
+            }
+
+            frame.dispose();
+            showLibraryAdmin();  
+        }
+    }
+});
+
 
         frame.add(panel);
         frame.setVisible(true);

@@ -29,7 +29,7 @@ public class User {
         this.password = password;
         this.loggedIn = false;
         this.borrowed = null;
-        this.admin = false;
+        this.admin = admin;
     }
     
 }
