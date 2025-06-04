@@ -1,7 +1,7 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this booksTemplate file, choose Tools | Templates
+ * and open the booksTemplate in the editor.
  */
 package biblotek;
 
@@ -38,34 +38,47 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Biblotek {
    static List<Bok> books = new ArrayList<>();
-   
+   static List<User> users = new ArrayList<>();
    
    
    public static void loadCredentials(){
-       
+            List<String> usersTemp = new ArrayList<>();
+          try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/users.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                usersTemp.add(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+          int lastNr = 0;
+        for (int i = 0; i < usersTemp.size()/5; i++) {
+            users.add(new User(usersTemp.get(0 + lastNr), usersTemp.get(1 + lastNr),Boolean.parseBoolean(usersTemp.get(2 + lastNr)), null,Boolean.parseBoolean(usersTemp.get(4 + lastNr) )));
+            lastNr += 4;
+        }
    }
    
     public static void main(String[] args) {
         
         
         loginGui();
-          
-        
+        loadCredentials();  
+        System.out.println(users.get(0).username);
           
 
-               List<String> temp = new ArrayList<>();
+               List<String> booksTemp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                temp.add(line);
+                booksTemp.add(line);
             }
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
     
         int lastNr = 0;
-        for (int i = 0; i < temp.size()/4; i++) {
-            books.add(new Bok(temp.get(0 + lastNr), temp.get(1 + lastNr),temp.get(2 + lastNr), parseBoolean(temp.get(3 + lastNr))));
+        for (int i = 0; i < booksTemp.size()/4; i++) {
+            books.add(new Bok(booksTemp.get(0 + lastNr), booksTemp.get(1 + lastNr),booksTemp.get(2 + lastNr), parseBoolean(booksTemp.get(3 + lastNr))));
             lastNr += 4;
         }
     }
@@ -98,6 +111,7 @@ public class Biblotek {
     
     
     }
+        
     public static void reDraw(){
             try (PrintWriter pw = new PrintWriter("src/biblotek/library.txt")) {
                                                 // Tömmer filen inför append(ix)
@@ -122,10 +136,11 @@ public class Biblotek {
         }  
     }
 }
+        //SKRIV ANVÄNDARE TILL TEXTFIL
     public static void createUser(String userN, String passW){
         String username = userN;
         String password = passW;
-        User user = new User(username,password);
+        //User user = new User(username,password);
             try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/users.txt", true)));
             pw.println("Username=" + username);
@@ -133,7 +148,6 @@ public class Biblotek {
             pw.println("LoggedIn=" + "false");
             pw.println("Borrowed=" + "null");
             pw.println("Admin=" + "false");
-            pw.println();
             pw.close();
             }
             
@@ -147,7 +161,7 @@ public class Biblotek {
     public static void login(){
         
     }
-
+        //VISA LOGIN
    public class LoginGUI {
     public static void loginGui() {
         JFrame frame = new JFrame("Logga in");
@@ -176,7 +190,7 @@ public class Biblotek {
         frame.getContentPane().add(panel);
         frame.setVisible(true);
 
-        
+        //LOGIN KNAPP
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();  
@@ -192,6 +206,7 @@ public class Biblotek {
                 }
             }
         });
+        //REGISTRERA
          registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 createUser(userText.getText(),new String(passText.getPassword()));
@@ -201,7 +216,7 @@ public class Biblotek {
             }
         });
     }
-
+        //VISA BIBLOTEK
     public static void showLibrary() {
         JFrame frame = new JFrame("Library");
         frame.setSize(600, 600);
@@ -230,6 +245,7 @@ public class Biblotek {
         buttonPanel.add(returnButton);
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
+        //LÅNA KNAPP
         borrowButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
@@ -249,7 +265,8 @@ public class Biblotek {
                 }
             }
         });
-
+        
+        //LÄMNA TILLBAKA KNAPP
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();

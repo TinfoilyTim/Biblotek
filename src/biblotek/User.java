@@ -24,7 +24,7 @@ public class User {
     List<String> borrowed;
     boolean admin;
     
-    public User(String username, String password){
+    public User(String username, String password, Boolean loggedIn, ArrayList<String> borrowed, Boolean admin){
         this.username = username;
         this.password = password;
         this.loggedIn = false;
