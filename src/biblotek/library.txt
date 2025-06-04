@@ -1,48 +1,48 @@
-To the Lighthouse
 Virginia Woolf
+To the Lighthouse
 978-0141183411
 true
-Pride and Prejudice
 Jane Austen
+Pride and Prejudice
 978-0141439518
 true
-1984
 George Orwell
+1984
 978-0451524935
 true
-Moby-Dick
 Herman Melville
+Moby-Dick
 978-1503280786
 true
-The Great Gatsby
 F. Scott Fitzgerald
+The Great Gatsby
 978-0743273565
 true
-The Catcher in the Rye
 J.D. Salinger
+The Catcher in the Rye
 978-0316769488
 true
-Crime and Punishment
 Fyodor Dostoevsky
+Crime and Punishment
 978-0486454115
 true
-War and Peace
 Leo Tolstoy
+War and Peace
 978-0199232765
 true
-Brave New World
 Aldous Huxley
+Brave New World
 978-0060850524
 true
-The Brothers Karamazov
 Fyodor Dostoevsky
+The Brothers Karamazov
 978-0374528379
 true
-Sömngångaren
 Lars Kepler
+Sömngångaren
 9789100182915
 true
-Sömngångaren
 Lars Kepler
+Sömngångaren
 9789100182915
 true

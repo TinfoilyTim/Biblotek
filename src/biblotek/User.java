@@ -32,11 +32,5 @@ public class User {
         this.admin = false;
     }
     
-    
-    
-
-    
-    
-    
 }
     

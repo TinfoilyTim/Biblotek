@@ -37,10 +37,12 @@ import javax.swing.table.DefaultTableModel;
  * @author 05timerl
  */
 public class Biblotek {
-   static List<Bok> books = new ArrayList<>();
+   static List<Bok>  books = new ArrayList<>();
    static List<User> users = new ArrayList<>();
+   static int currentUser = 0;
    
    
+//LADDAR ANVÄNDARINFORMATION I users LISTAN
    public static void loadCredentials(){
             List<String> usersTemp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/users.txt"))) {
@@ -54,17 +56,16 @@ public class Biblotek {
           int lastNr = 0;
         for (int i = 0; i < usersTemp.size()/5; i++) {
             users.add(new User(usersTemp.get(0 + lastNr), usersTemp.get(1 + lastNr),Boolean.parseBoolean(usersTemp.get(2 + lastNr)), null,Boolean.parseBoolean(usersTemp.get(4 + lastNr) )));
-            lastNr += 4;
+            lastNr += 5;
         }
    }
    
+   
+   //MAIN
     public static void main(String[] args) {
         
-        
         loginGui();
-        loadCredentials();  
-        System.out.println(users.get(0).username);
-          
+        loadCredentials();
 
                List<String> booksTemp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
@@ -111,7 +112,8 @@ public class Biblotek {
     
     
     }
-        
+    
+        //SKRIVER ÖVER LIBRARY FILEN
     public static void reDraw(){
             try (PrintWriter pw = new PrintWriter("src/biblotek/library.txt")) {
                                                 // Tömmer filen inför append(ix)
@@ -143,11 +145,11 @@ public class Biblotek {
         //User user = new User(username,password);
             try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/users.txt", true)));
-            pw.println("Username=" + username);
-            pw.println("Password=" + password);
-            pw.println("LoggedIn=" + "false");
-            pw.println("Borrowed=" + "null");
-            pw.println("Admin=" + "false");
+            pw.println(username);
+            pw.println(password);
+            pw.println("false");
+            pw.println("null");
+            pw.println("false");
             pw.close();
             }
             
@@ -196,22 +198,30 @@ public class Biblotek {
                 String username = userText.getText();  
                 String password = new String(passText.getPassword());
                 
-                if(username.equals("Admin") && password.equals("1234")){
-                    frame.dispose(); 
-                    showLibrary();   
-                }
                 
-                else{
-                   JOptionPane.showMessageDialog(null, "Fel användarnamn eller lösenord!");
+                for (int i = 0; i < users.size(); i++) {
+                        if(password.equals(users.get(i).password) && username.equals(users.get(i).username))   {
+                            frame.dispose(); 
+                            showLibrary();
+                            currentUser = i;
+                            JOptionPane.showMessageDialog(null, "Inloggad som " + users.get(i).username);
+                            break;
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Fel anändarnamn eller lösenord!");
+                            break;
+                        }
                 }
             }
+            
+            
         });
         //REGISTRERA
          registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 createUser(userText.getText(),new String(passText.getPassword()));
                 JOptionPane.showMessageDialog(null, "Användare registrerad!");
-                
+                loadCredentials();
                 
             }
         });
@@ -251,7 +261,8 @@ public class Biblotek {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow == -1) {
                     JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
-                    return;
+                    
+                    
                 }
 
                 Bok selectedBook = books.get(selectedRow);
