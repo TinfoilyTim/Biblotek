@@ -114,7 +114,7 @@ public class Biblotek {
     }
     
         //SKRIVER ÖVER LIBRARY FILEN
-    public static void reDraw(){
+    public static void reDrawBooks(){
             try (PrintWriter pw = new PrintWriter("src/biblotek/library.txt")) {
                                                 // Tömmer filen inför append(ix)
             } catch (IOException e) {
@@ -129,6 +129,32 @@ public class Biblotek {
             pw.println(books.get(i).title);
             pw.println(books.get(i).isbn);
             pw.println(books.get(i).stock);
+            pw.close();
+            }
+            
+        
+        catch (IOException e){
+            System.out.println("Kunde inte spara till filen");
+        }  
+    }
+}
+        //SKRIVER ÖVER LIBRARY FILEN
+    public static void reDrawUsers(){
+            try (PrintWriter pw = new PrintWriter("src/biblotek/users.txt")) {
+                                                // Tömmer filen inför append(ix)
+            } catch (IOException e) {
+    System.out.println("Kunde inte radera filens innehåll: " + e.getMessage());
+}
+  
+        for (int i = 0; i < books.size(); i++) {
+           
+                try {
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/users.txt", true)));      
+            pw.println(users.get(i).username);
+            pw.println(users.get(i).password);
+            pw.println(users.get(i).loggedIn);
+            pw.println(users.get(i).borrowed);
+            pw.println(users.get(i).admin);
             pw.close();
             }
             
@@ -205,6 +231,7 @@ public class Biblotek {
                             showLibrary();
                             currentUser = i;
                             JOptionPane.showMessageDialog(null, "Inloggad som " + users.get(i).username);
+                            
                             break;
                         }
                         else{
@@ -272,7 +299,9 @@ public class Biblotek {
                     selectedBook.stock = false;
                     model.setValueAt("No", selectedRow, 2);
                     JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
-                    reDraw();
+                    users
+                    reDrawUsers();
+                    reDrawBooks();
                 }
             }
         });
@@ -293,7 +322,7 @@ public class Biblotek {
                     selectedBook.stock = true;
                     model.setValueAt("Yes", selectedRow, 2);
                     JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
-                    reDraw();
+                    reDrawBooks();
                 }
             }
         });
