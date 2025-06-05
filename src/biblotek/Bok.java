@@ -10,30 +10,23 @@ package biblotek;
  * @author 05timerl
  */
 public class Bok {
-    String title;
     String author;
+    String title;
     String isbn;
     boolean stock;
     
    public Bok(){
-        this.title = "Unknown title";
         this.author = "Unknown author";
+        this.title = "Unknown title";
         this.isbn = "Unknown isbn";
         this.stock = false;
-        
-        
     } 
    
-    public Bok (String title, String author, String isbn, boolean stock){
-        this.title = title;
+    public Bok (String author, String title, String isbn, boolean stock){
         this.author = author;
+        this.title = title;
         this.isbn = isbn;
         this.stock = stock;
     }
-    /*
-    public void setStock(boolean stock){
-        this.stock = stock;
-    } */
-    
     
 }

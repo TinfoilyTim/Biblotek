@@ -66,7 +66,6 @@ public class Biblotek {
         
         loadCredentials();
         loginGui();
-        System.out.println(users.get(1).admin);
 
                List<String> booksTemp = new ArrayList<>();
           try (BufferedReader reader = new BufferedReader(new FileReader("src/biblotek/library.txt"))) {
@@ -120,7 +119,7 @@ public class Biblotek {
                                                 // Tömmer filen inför append(ix)
             } catch (IOException e) {
     System.out.println("Kunde inte radera filens innehåll: " + e.getMessage());
-}
+    }
   
         for (int i = 0; i < books.size(); i++) {
            
@@ -169,7 +168,7 @@ public class Biblotek {
     public static void createUser(String userN, String passW){
         String username = userN;
         String password = passW;
-        //User user = new User(username,password);
+        
             try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("src/biblotek/users.txt", true)));
             pw.println(username);
@@ -220,45 +219,38 @@ public class Biblotek {
         frame.setVisible(true);
 
         //LOGIN KNAPP
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();  
-                String password = new String(passText.getPassword());
-                
-                
-                for (int i = 0; i < users.size(); i++) {
-                        if(password.equals(users.get(i).password) && username.equals(users.get(i).username))   {
-                            currentUser = i;
-                            if(users.get(i).admin == true){
-                                frame.dispose(); 
-                                showLibraryAdmin();
-                            }
-                            else{
-                                frame.dispose(); 
-                                showLibrary();
-                                JOptionPane.showMessageDialog(null, "Inloggad som " + users.get(i).username);
-                            
-                            break;
-                                    }
-                            
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null, "Fel anändarnamn eller lösenord!");
-                            break;
-                        }
+        loginButton.addActionListener((ActionEvent e) -> {
+            String username = userText.getText();
+            String password = new String(passText.getPassword());
+            
+            
+            boolean loginSuccess = false;
+            
+            for (int i = 0; i < users.size(); i++) {
+                if (password.equals(users.get(i).password) && username.equals(users.get(i).username)) {
+                    loginSuccess = true;;
+                    
+                    if (users.get(i).admin == true) {
+                        frame.dispose(); 
+                        showLibraryAdmin();
+                    } else {
+                        frame.dispose(); 
+                        showLibrary();
+                        JOptionPane.showMessageDialog(null, "Inloggad som " + users.get(i).username);
+                    }
+                    break;
                 }
             }
             
-            
+            if (!loginSuccess) {            
+                JOptionPane.showMessageDialog(null, "Fel användarnamn eller lösenord!");
+            }
         });
         //REGISTRERA
-         registerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                createUser(userText.getText(),new String(passText.getPassword()));
-                JOptionPane.showMessageDialog(null, "Användare registrerad!");
-                loadCredentials();
-                
-            }
+         registerButton.addActionListener((ActionEvent e) -> {
+             createUser(userText.getText(),new String(passText.getPassword()));
+             JOptionPane.showMessageDialog(null, "Användare registrerad!");
+             loadCredentials();
         });
     }
         //VISA BIBLOTEK
@@ -295,46 +287,40 @@ public class Biblotek {
         
         
         //LÅNA KNAPP
-        borrowButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
-                    
-                    
-                }
-
-                Bok selectedBook = books.get(selectedRow);
-                if (!selectedBook.stock) {
-                    JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
-                } else {
-                    selectedBook.stock = false;
-                    model.setValueAt("No", selectedRow, 2);
-                    JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
-                    //reDrawUsers();
-                    reDrawBooks();
-                }
+        borrowButton.addActionListener((ActionEvent e) -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
+            }
+            
+            Bok selectedBook = books.get(selectedRow);
+            if (!selectedBook.stock) {
+                JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
+            } else {
+                selectedBook.stock = false;
+                model.setValueAt("No", selectedRow, 2);
+                JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
+                //reDrawUsers();
+                reDrawBooks();
             }
         });
         
         //LÄMNA TILLBAKA KNAPP
-        returnButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(frame, "Please select a book to return.");
-                    return;
-                }
-
-                Bok selectedBook = books.get(selectedRow);
-                if (selectedBook.stock) {
-                    JOptionPane.showMessageDialog(frame, "This book is not borrowed.");
-                } else {
-                    selectedBook.stock = true;
-                    model.setValueAt("Yes", selectedRow, 2);
-                    JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
-                    reDrawBooks();
-                }
+        returnButton.addActionListener((ActionEvent e) -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(frame, "Please select a book to return.");
+                return;
+            }
+            
+            Bok selectedBook = books.get(selectedRow);
+            if (selectedBook.stock) {
+                JOptionPane.showMessageDialog(frame, "This book is not borrowed.");
+            } else {
+                selectedBook.stock = true;
+                model.setValueAt("Yes", selectedRow, 2);
+                JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
+                reDrawBooks();
             }
         });
 
@@ -357,7 +343,7 @@ public class Biblotek {
         };
 
         for (Bok b : books) {
-            model.addRow(new Object[]{b.author, b.title, b.stock ? "Yes" : "No", b.isbn});
+            model.addRow(new Object[]{b.author,b.title , b.stock ? "Yes" : "No", b.isbn});
         }
 
         JTable table = new JTable(model);
@@ -379,91 +365,78 @@ public class Biblotek {
         
         
         //LÅNA KNAPP
-        borrowButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
-                    
-                    
-                }
-
-                Bok selectedBook = books.get(selectedRow);
-                if (!selectedBook.stock) {
-                    JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
-                } else {
-                    selectedBook.stock = false;
-                    model.setValueAt("No", selectedRow, 2);
-                    JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
-                    //reDrawUsers();
-                    reDrawBooks();
-                }
+        borrowButton.addActionListener((ActionEvent e) -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(frame, "Please select a book to borrow.");
+            }
+            
+            Bok selectedBook = books.get(selectedRow);
+            if (!selectedBook.stock) {
+                JOptionPane.showMessageDialog(frame, "This book is already borrowed.");
+            } else {
+                selectedBook.stock = false;
+                model.setValueAt("No", selectedRow, 2);
+                JOptionPane.showMessageDialog(frame, "You have borrowed: " + selectedBook.title);
+                reDrawBooks();
             }
         });
         
         //LÄMNA TILLBAKA KNAPP
-        returnButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(frame, "Please select a book to return.");
-                    return;
-                }
-
-                Bok selectedBook = books.get(selectedRow);
-                if (selectedBook.stock) {
-                    JOptionPane.showMessageDialog(frame, "This book is not borrowed.");
-                } else {
-                    selectedBook.stock = true;
-                    model.setValueAt("Yes", selectedRow, 2);
-                    JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
-                    reDrawBooks();
-                }
+        returnButton.addActionListener((ActionEvent e) -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(frame, "Please select a book to return.");
+                return;
+            }
+            
+            Bok selectedBook = books.get(selectedRow);
+            if (selectedBook.stock) {
+                JOptionPane.showMessageDialog(frame, "This book is not borrowed.");
+            } else {
+                selectedBook.stock = true;
+                model.setValueAt("Yes", selectedRow, 2);
+                JOptionPane.showMessageDialog(frame, "You have returned: " + selectedBook.title);
+                reDrawBooks();
             }
         });
         
         //LÄGG TILL BOK KNAPP
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String title = JOptionPane.showInputDialog("Skriv bokens titel:");
-                    if(title.equals("")){
-                        // försökte med !title men funkade inte hur jag än gjorde, därav en tom if sats
-                    }
-                    else{
-                        String author = JOptionPane.showInputDialog("Skriv bokens författare:");
-                        String isbn = JOptionPane.showInputDialog("ISBN för boken:");
-                        books.add(new Bok (title, author, isbn , true));
-                        reDrawBooks();
-                        frame.dispose();
-                        showLibraryAdmin();
-                    }
-                
-                
+        addButton.addActionListener((ActionEvent e) -> {
+            String title = JOptionPane.showInputDialog("Skriv bokens titel:");
+            if(title.equals("")){
+                // försökte med !title men funkade inte hur jag än gjorde, därav en tom if sats
+            }
+            else{
+                String author = JOptionPane.showInputDialog("Skriv bokens författare:");
+                String isbn = JOptionPane.showInputDialog("ISBN för boken:");
+                books.add(new Bok (title, author, isbn , true));
+                reDrawBooks();
+                frame.dispose();
+                showLibraryAdmin();
             }
         }); 
 
         //TA BORT BOK KNAPP
-        removeButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-        String remove = JOptionPane.showInputDialog("ISBN för boken som ska tas bort");
-
-        if (remove == null || remove.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingen ISBN angiven.");
-        } else {
-            boolean removed = books.removeIf(book -> book.isbn.equals(remove.trim()));
-
-            if (removed) {
-                reDrawBooks();
-                JOptionPane.showMessageDialog(null, "Boken togs bort.");
+        removeButton.addActionListener((ActionEvent e) -> {
+            String remove = JOptionPane.showInputDialog("ISBN för boken som ska tas bort");
+            
+            if (remove == null || remove.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Ingen ISBN angiven.");
             } else {
-                JOptionPane.showMessageDialog(null, "Ingen bok med denna ISBN hittades.");
+                boolean removed = books.removeIf(book -> book.isbn.equals(remove.trim()));
+                
+                if (removed) {
+                    reDrawBooks();
+                    JOptionPane.showMessageDialog(null, "Boken togs bort.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingen bok med denna ISBN hittades.");
+                }
+                
+                frame.dispose();
+                showLibraryAdmin();
             }
-
-            frame.dispose();
-            showLibraryAdmin();  
-        }
-    }
-});
+        });
 
 
         frame.add(panel);
